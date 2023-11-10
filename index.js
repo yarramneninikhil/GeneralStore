@@ -1,0 +1,52 @@
+const store = document.querySelector(".store");
+const form = document.querySelector("#myform");
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const itemname = document.querySelector("#itemname").value;
+  const description = document.querySelector("#description").value;
+  const price = document.querySelector("#price").value;
+  const quantity = document.querySelector("#quantity").value;
+  const tableRow = document.createElement("tr");
+  const itemnameCell = document.createElement("td");
+  const descriptionCell = document.createElement("td");
+  const priceCell = document.createElement("td");
+  const quantityCell = document.createElement("td");
+  itemnameCell.textContent = itemname;
+  descriptionCell.textContent = description;
+  priceCell.textContent = price;
+  quantityCell.textContent = quantity;
+  itemnameCell.style.padding = "10px 80px";
+  descriptionCell.style.padding = "10px 80px";
+  priceCell.style.padding = "10px 80px";
+  quantityCell.style.padding = "10px 80px";
+  tableRow.appendChild(itemnameCell);
+  tableRow.appendChild(descriptionCell);
+  tableRow.appendChild(priceCell);
+  tableRow.appendChild(quantityCell);
+  const btn1 = document.createElement("button");
+  btn1.textContent = "Buy1";
+  btn1.addEventListener("click", () => {
+    let val = tableRow.querySelector("td:nth-child(4").textContent;
+    val--;
+    tableRow.querySelector("td:nth-child(4").textContent = val;
+  });
+  const btn2 = document.createElement("button");
+  btn2.textContent = "Buy2";
+  btn2.addEventListener("click", () => {
+    let val = tableRow.querySelector("td:nth-child(4)").textContent;
+    val = val - 2;
+    tableRow.querySelector("td:nth-child(4)").textContent = val;
+  });
+  const btn3 = document.createElement("button");
+  btn3.textContent = "Buy3";
+  btn3.addEventListener("click", () => {
+    let val = tableRow.querySelector("td:nth-child(4)").textContent;
+    val = val - 3;
+    tableRow.querySelector("td:nth-child(4)").textContent = val;
+  });
+  tableRow.appendChild(btn1);
+  tableRow.appendChild(btn2);
+  tableRow.appendChild(btn3);
+  tableRow.style.textAlign = "center";
+  store.appendChild(tableRow);
+});

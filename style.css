@@ -1,0 +1,8 @@
+#myform {
+  display: flex;
+  justify-content: space-around;
+}
+.store {
+  /* border: 1px solid black; */
+  margin: 20px 30px;
+}
