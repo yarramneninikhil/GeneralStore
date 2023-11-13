@@ -8,31 +8,33 @@
 </head>
 <body>
   <div class="container">
-  <form action="" id="myform">
-    <div>
-    <label for="itemname">Item Name:</label><br>
-    <input type="text" name="itemname" id="itemname"><br>
+    <h1 class="heading">General Store</h1>
+    <form action="" id="myform">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="itemname">Item Name:</label>
+          <input type="text" name="itemname" id="itemname" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" name="description" id="description" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input type="text" name="price" id="price" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity:</label>
+          <input type="number" name="quantity" id="quantity" class="input-field" required>
+        </div>
+        <button class="btn addbtn">Add Item</button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="description">Description:</label><br>
-    <input type="text" name="description" id="description"><br>
+  <div class="store container">
+    <h2 class="second heading">Items Available Inside Store</h2>
   </div>
-  <div>
-    <label for="price">Price:</label><br>
-    <input type="text" name="price" id="price"><br>
-  </div>
-  <div>
-    <label for="quantity">Quantity:</label><br>
-    <input type="number" name="quantity" id="quantity"><br>
-  </div>
-    <button class="btn addbtn">Add Item</button>
-  </form>
-</div>
-<div class="secondcontainer">
-  <table class="store">
-  
-  </table>
-</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"></script>
   <script src="index.js"></script>
 </body>
 </html>
