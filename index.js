@@ -12,209 +12,121 @@ form.addEventListener("submit", (e) => {
     price,
     quantity,
   };
-  axios
-    .post(
-      "https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails",
-      obj
-    )
-    .then((res) => {
-      const id = res.data._id;
-      createTable(itemname, description, price, quantity, id);
-    })
-    .catch((er) => console.log(er));
+  async function postData(obj) {
+    try {
+      const response = await axios.post(
+        "https://crudcrud.com/api/c5b8a1ef69ff42a7a6b51ceec1caf817/storedetails",
+        obj
+      );
+      displayData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  postData(obj);
 });
 
-function tableStyling(
-  itemnameCell,
-  descriptionCell,
-  priceCell,
-  quantityCell,
-  tableRow
-) {
-  itemnameCell.style.padding = "0px 120px";
-  descriptionCell.style.padding = "10px 80px";
-  priceCell.style.padding = "10px 80px";
-  quantityCell.style.padding = "10px 80px";
-  itemnameCell.style.border = "1px solid #880e4f";
-  itemnameCell.style.borderRadius = "10px";
-  itemnameCell.style.backgroundColor = "#fff";
-  descriptionCell.style.border = "1px solid #880e4f";
-  descriptionCell.style.border = "1px solid #880e4f";
-  descriptionCell.style.borderRadius = "10px";
-  descriptionCell.style.backgroundColor = "#fff";
-  descriptionCell.style.border = "1px solid #880e4f";
-  priceCell.style.border = "1px solid #880e4f";
-  priceCell.style.borderRadius = "10px";
-  priceCell.style.backgroundColor = "#fff";
-  priceCell.style.border = "1px solid #880e4f";
-  quantityCell.style.border = "1px solid #880e4f";
-  quantityCell.style.borderRadius = "10px";
-  quantityCell.style.backgroundColor = "#fff";
-  quantityCell.style.border = "1px solid #880e4f";
-  tableRow.appendChild(itemnameCell);
-  tableRow.appendChild(descriptionCell);
-  tableRow.appendChild(priceCell);
-  tableRow.appendChild(quantityCell);
-}
-
-function buttonStyling(btn) {
-  btn.style.fontSize = "22px";
-  btn.style.backgroundColor = "#880e4f";
-  btn.style.border = "1px solid #880e4f";
-  btn.style.borderRadius = "10px";
-  btn.style.padding = "10px 40px";
-  btn.style.margin = "10px";
-  btn.style.color = "#e0e0e0";
-}
-
-function createTable(itemname, description, price, quantity, id) {
-  const tableRow = document.createElement("tr");
+function displayData(obj) {
+  const tablerow = document.createElement("tr");
   const itemnameCell = document.createElement("td");
   const descriptionCell = document.createElement("td");
   const priceCell = document.createElement("td");
   const quantityCell = document.createElement("td");
-  itemnameCell.textContent = itemname;
-  descriptionCell.textContent = description;
-  priceCell.textContent = price;
-  quantityCell.textContent = quantity;
-  tableStyling(
-    itemnameCell,
-    descriptionCell,
-    priceCell,
-    quantityCell,
-    tableRow
-  );
+  itemnameCell.textContent = obj.itemname;
+  descriptionCell.textContent = obj.description;
+  priceCell.textContent = obj.price;
+  quantityCell.textContent = obj.quantity;
+  tablerow.append(itemnameCell);
+  tablerow.append(descriptionCell);
+  tablerow.append(priceCell);
+  tablerow.append(quantityCell);
   const btn1 = document.createElement("button");
   btn1.textContent = "Buy1";
-  buttonStyling(btn1);
+  tablerow.append(btn1);
   btn1.addEventListener("click", () => {
-    axios
-      .get(
-        `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${id}`
-      )
-      .then((res) => {
-        res.data.quantity--;
-        let obj = res.data;
-        axios
-          .put(
-            `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${obj._id}`,
-            {
-              obj,
-            }
-          )
-          .then((res) => console.log("object updated successfully"))
-          .catch((er) => console.log(er));
-      })
-      .catch((er) => console.log(er));
-
-    let val = tableRow.querySelector("td:nth-child(4").textContent;
-    if (val > 1) {
-      val--;
-      tableRow.querySelector("td:nth-child(4").textContent = val;
+    let value = 1;
+    if (obj.quantity > value) {
+      updateData(obj, obj._id, value, quantityCell);
     } else {
-      deleteItem(id, tableRow);
+      tablerow.remove();
+      deleteData(obj._id);
     }
   });
-
   const btn2 = document.createElement("button");
   btn2.textContent = "Buy2";
-  buttonStyling(btn2);
+  tablerow.append(btn2);
   btn2.addEventListener("click", () => {
-    axios
-      .get(
-        `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${id}`
-      )
-      .then((res) => {
-        res.data.quantity = res.data.quantity - 2;
-        let obj = res.data;
-        axios
-          .put(
-            `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${obj._id}`,
-            {
-              obj,
-            }
-          )
-          .then((res) => console.log("object updated successfully"))
-          .catch((er) => console.log(er));
-      })
-      .catch((er) => console.log(er));
-    let val = tableRow.querySelector("td:nth-child(4)").textContent;
-    if (val > 2) {
-      val = val - 2;
-      tableRow.querySelector("td:nth-child(4)").textContent = val;
+    let value = 2;
+    if (obj.quantity > value) {
+      updateData(obj, obj._id, value, quantityCell);
+    } else if (obj.quantity < value) {
+      alert("cannot buy two products");
     } else {
-      alert("unable to buy two products");
+      tablerow.remove();
+      deleteData(obj._id);
     }
   });
-
   const btn3 = document.createElement("button");
   btn3.textContent = "Buy3";
-  buttonStyling(btn3);
+  tablerow.append(btn3);
   btn3.addEventListener("click", () => {
-    axios
-      .get(
-        `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${id}`
-      )
-      .then((res) => {
-        res.data.quantity = res.data.quantity - 3;
-        let obj = res.data;
-        axios
-          .put(
-            `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${obj._id}`,
-            {
-              obj,
-            }
-          )
-          .then((res) => console.log("object updated successfully"))
-          .catch((er) => console.log(er));
-      })
-      .catch((er) => console.log(er));
-
-    let val = tableRow.querySelector("td:nth-child(4)").textContent;
-    if (val > 3) {
-      val = val - 3;
-      tableRow.querySelector("td:nth-child(4)").textContent = val;
+    let value = 3;
+    if (obj.quantity > value) {
+      updateData(obj, obj._id, value, quantityCell);
+    } else if (obj.quantity < value) {
+      alert("cannot buy three products");
     } else {
-      alert("unable to buy three products");
+      tablerow.remove();
+      deleteData(obj._id);
     }
   });
-
-  tableRow.appendChild(btn1);
-  tableRow.appendChild(btn2);
-  tableRow.appendChild(btn3);
-  tableRow.style.textAlign = "center";
-  store.appendChild(tableRow);
+  store.append(tablerow);
 }
 
-function deleteItem(id, tableRow) {
-  tableRow.remove();
-  axios
-    .delete(
-      `https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails/${id}`
-    )
-    .then((res) => {
-      console.log("object deleted from cloud");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+async function updateData(obj, id, value, quantityCell) {
+  obj.quantity = obj.quantity - value;
+  quantityCell.textContent = obj.quantity;
+  const newobj = {
+    itemname: obj.itemname,
+    description: obj.description,
+    price: obj.price,
+    quantity: obj.quantity,
+  };
+
+  try {
+    const res = await axios.put(
+      `https://crudcrud.com/api/c5b8a1ef69ff42a7a6b51ceec1caf817/storedetails/${id}`,
+      newobj
+    );
+    console.log(res);
+  } catch (er) {
+    console.log(er);
+  }
+}
+
+async function deleteData(id) {
+  try {
+    const res = await axios.delete(
+      `https://crudcrud.com/api/c5b8a1ef69ff42a7a6b51ceec1caf817/storedetails/${id}`
+    );
+    console.log("Object deleted successfully");
+  } catch (er) {
+    console.log(er);
+  }
 }
 
 window.addEventListener("load", () => {
-  axios
-    .get(
-      "https://crudcrud.com/api/9b8ff8f2aef7418fb8f04c1d2d9f6545/storedetails"
-    )
-    .then((res) => {
-      res.data.forEach((val) => {
-        createTable(
-          val.itemname,
-          val.description,
-          val.price,
-          val.quantity,
-          val._id
-        );
+  async function fetch() {
+    try {
+      const res = await axios.get(
+        "https://crudcrud.com/api/c5b8a1ef69ff42a7a6b51ceec1caf817/storedetails"
+      );
+      res.data.forEach((item) => {
+        displayData(item);
       });
-    })
-    .catch((err) => console.log("Store is empty"));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  fetch();
 });
